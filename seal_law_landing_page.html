@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEAL LAW - Dịch Vụ Tư Vấn Pháp Luật Thường Xuyên</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Custom Brand Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'seal-green': '#023020', // Dark forest green from logo background
+                        'seal-green-light': '#0a4b35',
+                        'seal-gold': '#D4AF37',   // Gold from logo text
+                        'seal-gold-hover': '#b5952f',
+                        'seal-dark': '#111827',
+                    },
+                    fontFamily: {
+                        heading: ['"Playfair Display"', 'serif'],
+                        body: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Interactive Elements */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #D4AF37, #FFF5C3, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* Loader Animation */
+        .loader {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #D4AF37;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-body text-gray-800 bg-gray-50 antialiased selection:bg-seal-gold selection:text-seal-green">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-seal-green/95 backdrop-blur-md border-b border-seal-gold/20" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-12 bg-seal-gold flex items-center justify-center rounded-sm relative" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                        <span class="font-heading font-bold text-seal-green text-2xl">S</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-heading font-bold text-seal-gold text-xl leading-none tracking-wider">SEAL</span>
+                        <span class="text-white text-[0.6rem] tracking-[0.2em] uppercase">Legal Company</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#ve-chung-toi" class="text-gray-200 hover:text-seal-gold font-medium transition-colors text-sm uppercase tracking-wide">Về Chúng Tôi</a>
+                    <a href="#ai-demo" class="text-gray-200 hover:text-seal-gold font-medium transition-colors text-sm uppercase tracking-wide flex items-center gap-1">AI Phân Tích <span class="text-seal-gold">✨</span></a>
+                    <a href="#dich-vu" class="text-gray-200 hover:text-seal-gold font-medium transition-colors text-sm uppercase tracking-wide">Dịch Vụ</a>
+                    <a href="#bang-gia" class="text-gray-200 hover:text-seal-gold font-medium transition-colors text-sm uppercase tracking-wide">Bảng Giá</a>
+                    <a href="#tin-tuc" class="text-gray-200 hover:text-seal-gold font-medium transition-colors text-sm uppercase tracking-wide">Tin Tức</a>
+                    <button onclick="openModal('Tư vấn ngay')" class="bg-seal-gold hover:bg-seal-gold-hover text-seal-green font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                        Đăng Ký Tư Vấn
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-200 hover:text-seal-gold focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-seal-green border-t border-seal-gold/20 pb-4">
+            <a href="#ve-chung-toi" class="block px-4 py-3 text-gray-200 hover:text-seal-gold hover:bg-seal-green-light border-b border-seal-green-light">Về Chúng Tôi</a>
+            <a href="#ai-demo" class="block px-4 py-3 text-gray-200 hover:text-seal-gold hover:bg-seal-green-light border-b border-seal-green-light flex items-center gap-1">AI Phân Tích <span class="text-seal-gold">✨</span></a>
+            <a href="#dich-vu" class="block px-4 py-3 text-gray-200 hover:text-seal-gold hover:bg-seal-green-light border-b border-seal-green-light">Dịch Vụ</a>
+            <a href="#bang-gia" class="block px-4 py-3 text-gray-200 hover:text-seal-gold hover:bg-seal-green-light border-b border-seal-green-light">Bảng Giá</a>
+            <a href="#tin-tuc" class="block px-4 py-3 text-gray-200 hover:text-seal-gold hover:bg-seal-green-light">Tin Tức</a>
+            <div class="px-4 pt-3">
+                <button onclick="openModal('Tư vấn ngay')" class="w-full bg-seal-gold text-seal-green font-bold py-3 rounded-md">Đăng Ký Tư Vấn</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-seal-green overflow-hidden">
+        <!-- Background Pattern/Overlay -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(#D4AF37 1px, transparent 1px); background-size: 30px 30px;"></div>
+        </div>
+        <!-- Decorative Glow -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-seal-gold/20 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-seal-gold/10 text-seal-gold border border-seal-gold/30 text-sm font-semibold tracking-wider mb-6 animate-pulse">
+                ĐỐI TÁC CHIẾN LƯỢC CỦA DOANH NGHIỆP
+            </span>
+            <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                Chuyển Đổi Từ <span class="gradient-text italic">Chữa Cháy</span> <br class="hidden md:block"> Sang <span class="gradient-text">Phòng Ngừa Chiến Lược</span>
+            </h1>
+            <p class="mt-4 max-w-3xl mx-auto text-xl text-gray-300 mb-10 leading-relaxed font-light">
+                Gói Dịch Vụ Tư Vấn Pháp Luật Thường Xuyên của SEAL LAW giúp Startup và SME kiểm soát rủi ro, bảo vệ tài sản và an tâm tăng trưởng với chi phí minh bạch tuyệt đối.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#bang-gia" class="bg-seal-gold hover:bg-white text-seal-green font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(212,175,55,0.3)]">
+                    Xem Bảng Giá
+                </a>
+                <button onclick="openModal('Khảo sát sức khỏe pháp lý')" class="bg-transparent border-2 border-seal-gold text-seal-gold hover:bg-seal-gold hover:text-seal-green font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:-translate-y-1">
+                    <i class="fas fa-stethoscope mr-2"></i> Nhận Khảo Sát Miễn Phí
+                </button>
+            </div>
+            
+            <div class="mt-16 pt-10 border-t border-seal-gold/20 flex flex-wrap justify-center gap-8 md:gap-16 text-gray-400">
+                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-seal-gold"></i><span>Phòng ngừa rủi ro chủ động</span></div>
+                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-seal-gold"></i><span>Chi phí định lượng, minh bạch</span></div>
+                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-seal-gold"></i><span>Bảo mật dữ liệu tuyệt đối</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section id="ve-chung-toi" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-seal-green mb-4">Nỗi Đau Của Doanh Nghiệp Khởi Nghiệp</h2>
+                <div class="w-20 h-1 bg-seal-gold mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Point 1 -->
+                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 card-hover group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-14 h-14 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading">Sai Sót Hợp Đồng</h3>
+                    <p class="text-gray-600">Sử dụng hợp đồng mẫu tải trên mạng dẫn đến những điều khoản bất lợi, rủi ro bị phạt hoặc tranh chấp khi mở rộng quy mô.</p>
+                </div>
+                <!-- Point 2 -->
+                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 card-hover group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-14 h-14 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-users-slash"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading">Rủi Ro Lao Động</h3>
+                    <p class="text-gray-600">Quy trình nội bộ và hợp đồng lao động không chuẩn hóa, nguy cơ bị phạt vi phạm luật BHXH và thuế ẩn cao.</p>
+                </div>
+                <!-- Point 3 -->
+                <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 card-hover group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-14 h-14 bg-red-100 text-red-500 rounded-xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading">Chi Phí "Chữa Cháy"</h3>
+                    <p class="text-gray-600">Chỉ tìm đến luật sư khi sự việc đã xảy ra, khiến chi phí khắc phục cao gấp 10 lần so với chi phí phòng ngừa chiến lược.</p>
+                </div>
+            </div>
+
+            <!-- The SEAL Solution -->
+            <div class="mt-20 bg-seal-green rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-64 h-64 bg-seal-gold/10 rounded-full blur-3xl"></div>
+                <div class="md:w-2/3 relative z-10">
+                    <h3 class="font-heading text-3xl font-bold text-seal-gold mb-4">Giải pháp tối ưu từ SEAL LAW</h3>
+                    <p class="text-gray-200 text-lg mb-6">Thuê ngoài (outsourcing) Phòng Pháp chế. Cung cấp nền tảng pháp lý vững chắc với chi phí cố định, giúp bạn an tâm tuyệt đối để tập trung kinh doanh.</p>
+                    <ul class="text-gray-300 space-y-3">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-seal-gold"></i> Chủ động cảnh báo trước quyết định liên quan đến Tiền, Người, Tài sản.</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-seal-gold"></i> Cam kết phản hồi SLA trong 4 Giờ làm việc.</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-seal-gold"></i> Báo cáo Giá trị Tác động định kỳ.</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/3 mt-8 md:mt-0 flex justify-center relative z-10">
+                    <div class="text-center">
+                        <div class="text-6xl font-heading font-bold text-seal-gold mb-2">10x</div>
+                        <p class="text-gray-300 font-medium">Tiết kiệm chi phí<br>so với khắc phục hậu quả</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Contract Analyzer Section (Gemini Integration) -->
+    <section id="ai-demo" class="py-20 bg-seal-dark text-white relative border-y-4 border-seal-gold">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-seal-gold/10 border border-seal-gold/30 text-seal-gold mb-4">
+                    <i class="fas fa-robot"></i> <span class="font-semibold text-sm tracking-wider">CÔNG NGHỆ LLM TỪ GEMINI</span>
+                </div>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-4">Trợ Lý AI: Phân Tích Rủi Ro Hợp Đồng ✨</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Kiểm tra nhanh mức độ an toàn của một điều khoản hợp đồng. Bạn đang dùng mẫu hợp đồng trên mạng? Hãy dán một đoạn vào đây để xem rủi ro tiềm ẩn.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Input Area -->
+                <div class="bg-white/5 border border-gray-700 p-6 rounded-2xl backdrop-blur-sm">
+                    <label for="ai-contract-input" class="block text-sm font-medium text-seal-gold mb-2">Dán điều khoản hợp đồng của bạn vào đây:</label>
+                    <textarea id="ai-contract-input" rows="8" class="w-full bg-black/40 border border-gray-600 rounded-xl p-4 text-gray-200 focus:outline-none focus:border-seal-gold focus:ring-1 focus:ring-seal-gold resize-none transition-colors" placeholder="Ví dụ: 'Bên B sẽ phải bồi thường toàn bộ thiệt hại và chịu phạt 50% giá trị hợp đồng nếu giao hàng trễ hạn 1 ngày...'"></textarea>
+                    
+                    <button onclick="analyzeContract()" id="ai-submit-btn" class="mt-4 w-full bg-seal-gold hover:bg-seal-gold-hover text-seal-green font-bold py-3 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-magic"></i> Phân Tích Ngay ✨
+                    </button>
+                    <p class="text-xs text-gray-500 mt-3 text-center">* Đây chỉ là phân tích sơ bộ từ AI. Để đảm bảo tính pháp lý tuyệt đối, vui lòng sử dụng gói Tư Vấn Thường Xuyên của chúng tôi.</p>
+                </div>
+
+                <!-- Output Area -->
+                <div class="bg-white/5 border border-gray-700 p-6 rounded-2xl backdrop-blur-sm flex flex-col h-full min-h-[300px]">
+                    <h3 class="text-sm font-medium text-seal-gold mb-4 flex items-center gap-2">
+                        <i class="fas fa-clipboard-check"></i> Kết quả chẩn đoán từ chuyên gia AI
+                    </h3>
+                    
+                    <div id="ai-result-container" class="flex-grow bg-black/20 rounded-xl p-5 border border-gray-700/50 overflow-y-auto">
+                        <!-- Initial State -->
+                        <div id="ai-initial" class="h-full flex flex-col items-center justify-center text-gray-500 text-center">
+                            <i class="fas fa-file-signature text-4xl mb-3 opacity-30"></i>
+                            <p class="text-sm">Kết quả phân tích rủi ro sẽ hiển thị tại đây.</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="ai-loading" class="h-full flex flex-col items-center justify-center text-seal-gold hidden">
+                            <div class="loader mb-4"></div>
+                            <p class="text-sm animate-pulse">Trợ lý AI đang đọc và phân tích các điều khoản...</p>
+                        </div>
+
+                        <!-- Result Content -->
+                        <div id="ai-output-content" class="text-sm text-gray-300 leading-relaxed hidden space-y-3">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Detail -->
+    <section id="dich-vu" class="py-20 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-seal-green mb-4">Giá Trị Cốt Lõi Gói Dịch Vụ</h2>
+                <div class="w-20 h-1 bg-seal-gold mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                    <div class="w-12 h-12 bg-seal-green/10 text-seal-green rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-900 mb-2">Bonus Khởi Đầu</h4>
+                    <p class="text-sm text-gray-600">Miễn phí 01 buổi "Khảo sát Sức khỏe Pháp lý Doanh nghiệp" (1-2 giờ) nhận diện rủi ro ngay từ đầu.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                    <div class="w-12 h-12 bg-seal-green/10 text-seal-green rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-900 mb-2">Tư Vấn Thường Xuyên</h4>
+                    <p class="text-sm text-gray-600">Hỗ trợ giải đáp qua email/điện thoại từ 10 giờ đến không giới hạn, đảm bảo quyết định kinh doanh an toàn.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                    <div class="w-12 h-12 bg-seal-green/10 text-seal-green rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-900 mb-2">Soạn Thảo Hợp Đồng</h4>
+                    <p class="text-sm text-gray-600">Rà soát và soạn thảo các loại hợp đồng (lao động, dịch vụ, NDA...) chuẩn hóa, bảo vệ quyền lợi tối đa.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                    <div class="w-12 h-12 bg-seal-green/10 text-seal-green rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-900 mb-2">Cảnh Báo Định Kỳ</h4>
+                    <p class="text-sm text-gray-600">Bản tin pháp lý định kỳ hàng tháng cập nhật thay đổi luật liên quan trực tiếp đến ngành nghề của bạn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="bang-gia" class="py-24 bg-seal-green relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-seal-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-seal-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-4">Bảng Giá Tiêu Chuẩn Minh Bạch</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Định lượng rõ ràng phạm vi công việc. Không chi phí ẩn. Cam kết hoàn trả 100% nếu vi phạm SLA.</p>
+            </div>
+
+            <!-- Billing Toggle -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-seal-dark/50 p-1 rounded-full inline-flex border border-seal-gold/20">
+                    <button id="btn-monthly" class="px-6 py-2 rounded-full text-sm font-semibold transition-colors bg-seal-gold text-seal-green" onclick="togglePricing('monthly')">Hàng Tháng</button>
+                    <button id="btn-yearly" class="px-6 py-2 rounded-full text-sm font-semibold text-gray-300 transition-colors hover:text-white" onclick="togglePricing('yearly')">1 Năm <span class="text-seal-gold text-xs ml-1">(Tiết kiệm tới 11Tr)</span></button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                
+                <!-- Startup Plan -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg transform transition-all duration-300 hover:scale-105 border border-gray-100 relative">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-heading font-bold text-seal-green uppercase">Gói "Khởi Nghiệp"</h3>
+                        <p class="text-gray-500 text-sm mt-2">Dưới 10 tỷ VNĐ / Doanh nghiệp mới</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-900 price-display" data-monthly="3.000.000" data-yearly="30.000.000">3.000.000</span>
+                        <span class="text-gray-500 font-medium">VNĐ<span class="billing-cycle">/tháng</span></span>
+                        <p class="text-green-600 text-sm font-medium mt-1 h-5 saving-display"></p>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-gray-600 text-sm">
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Tư vấn qua điện thoại/email <strong class="text-seal-green">không giới hạn</strong></span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Soạn/Rà soát tối đa <strong class="text-seal-green">05 văn bản</strong> đơn giản/tháng</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Khảo sát Sức khỏe pháp lý ban đầu</span></li>
+                        <li class="flex items-start gap-3 text-gray-400"><i class="fas fa-times mt-1"></i> <span>Không bao gồm đại diện họp/làm việc</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Giảm 10% các dịch vụ phát sinh</span></li>
+                    </ul>
+                    <button onclick="openModal('Gói Khởi Nghiệp')" class="w-full py-3 rounded-xl border-2 border-seal-green text-seal-green font-bold hover:bg-seal-green hover:text-white transition-colors">Chọn Gói Này</button>
+                </div>
+
+                <!-- Growth Plan (Highlighted) -->
+                <div class="bg-gradient-to-b from-seal-gold to-[#b5952f] rounded-3xl p-1 shadow-2xl transform transition-all duration-300 hover:scale-105 scale-100 md:scale-105 relative z-10">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-seal-green text-seal-gold px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-seal-gold">
+                        Phổ Biến Nhất
+                    </div>
+                    <div class="bg-seal-dark rounded-[23px] p-8 h-full">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-heading font-bold text-seal-gold uppercase">Gói "Phát Triển"</h3>
+                            <p class="text-gray-400 text-sm mt-2">SME quy mô 10 - 100 tỷ VNĐ</p>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-white price-display" data-monthly="8.000.000" data-yearly="85.000.000">8.000.000</span>
+                            <span class="text-gray-400 font-medium">VNĐ<span class="billing-cycle">/tháng</span></span>
+                            <p class="text-seal-gold text-sm font-medium mt-1 h-5 saving-display"></p>
+                            <p class="text-xs text-gray-500 mt-1 italic">+ Phí tăng thêm theo lĩnh vực đặc thù</p>
+                        </div>
+                        <ul class="space-y-4 mb-8 text-gray-300 text-sm">
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Toàn bộ dịch vụ của Gói Khởi nghiệp</span></li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Soạn/Rà soát tối đa <strong class="text-white">10 văn bản</strong> phức tạp/tháng</span></li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Luật sư đại diện tối đa <strong class="text-white">02 buổi họp/tháng</strong></span></li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Xây dựng Bản đồ Rủi ro 90 Ngày</span></li>
+                            <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Giảm 15% các dịch vụ phát sinh phức tạp</span></li>
+                        </ul>
+                        <button onclick="openModal('Gói Phát Triển')" class="w-full py-3 rounded-xl bg-seal-gold text-seal-green font-bold hover:bg-white transition-colors shadow-[0_0_15px_rgba(212,175,55,0.4)]">Đăng Ký Ngay</button>
+                    </div>
+                </div>
+
+                <!-- Custom Plan -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg transform transition-all duration-300 hover:scale-105 border border-gray-100 relative">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-heading font-bold text-seal-green uppercase">Gói "Đồng Hành"</h3>
+                        <p class="text-gray-500 text-sm mt-2">Tập đoàn, FDI, trên 100 tỷ VNĐ</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold text-gray-900">Thỏa Thuận</span>
+                        <span class="text-white font-medium block">.</span>
+                        <p class="h-5"></p>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-gray-600 text-sm">
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Trở thành phòng Pháp chế nội bộ</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Văn bản & Cuộc họp <strong class="text-seal-green">Không giới hạn</strong></span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Tư vấn dự án đặc thù, M&A, IPO</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Đánh giá Due Diligence nội bộ hàng năm</span></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check text-seal-gold mt-1"></i> <span>Giải pháp Tùy chỉnh (Custom SOW)</span></li>
+                    </ul>
+                    <button onclick="openModal('Gói Đồng Hành')" class="w-full py-3 rounded-xl border-2 border-seal-green text-seal-green font-bold hover:bg-seal-green hover:text-white transition-colors">Liên Hệ Tư Vấn</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Hot News Section -->
+    <section id="tin-tuc" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold text-seal-green mb-2">Bản Tin & Cảnh Báo Pháp Lý</h2>
+                    <div class="w-16 h-1 bg-seal-gold rounded-full"></div>
+                </div>
+                <a href="#" class="text-seal-gold font-semibold hover:text-seal-green hidden sm:block">Xem tất cả <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- News Item 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 group cursor-pointer" onclick="openModal('Đọc tin: Rủi ro Hợp đồng')">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-seal-green/80 group-hover:bg-seal-green/60 transition-colors z-10"></div>
+                        <i class="fas fa-file-contract text-6xl text-seal-gold/50 z-20"></i>
+                        <span class="absolute top-4 left-4 bg-seal-gold text-seal-green text-xs font-bold px-3 py-1 rounded-full z-20">HOT</span>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-gray-500 mb-2"><i class="far fa-calendar-alt mr-1"></i> 23 Tháng 05, 2026</p>
+                        <h3 class="font-heading font-bold text-xl text-gray-900 mb-3 group-hover:text-seal-gold transition-colors">3 Rủi ro trí mạng khi sử dụng Hợp đồng lao động mẫu trên mạng</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">Nhiều startup bị phạt nặng do sai sót trong việc đóng BHXH và cấu trúc lương được quy định sai trong hợp đồng tải từ Internet...</p>
+                    </div>
+                </div>
+
+                <!-- News Item 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 group cursor-pointer" onclick="openModal('Đọc tin: Luật Doanh nghiệp')">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-seal-green/80 group-hover:bg-seal-green/60 transition-colors z-10"></div>
+                        <i class="fas fa-balance-scale text-6xl text-seal-gold/50 z-20"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-gray-500 mb-2"><i class="far fa-calendar-alt mr-1"></i> 15 Tháng 05, 2026</p>
+                        <h3 class="font-heading font-bold text-xl text-gray-900 mb-3 group-hover:text-seal-gold transition-colors">Cập nhật Luật Doanh nghiệp 2026: Doanh nghiệp SME cần lưu ý gì?</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">Phân tích chuyên sâu từ chuyên gia SEAL LAW về những thay đổi trong thủ tục hành chính và quản trị nội bộ dành riêng cho doanh nghiệp vừa và nhỏ...</p>
+                    </div>
+                </div>
+
+                <!-- News Item 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 group cursor-pointer" onclick="openModal('Đọc tin: Bảo mật dữ liệu')">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 bg-seal-green/80 group-hover:bg-seal-green/60 transition-colors z-10"></div>
+                        <i class="fas fa-shield-alt text-6xl text-seal-gold/50 z-20"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-gray-500 mb-2"><i class="far fa-calendar-alt mr-1"></i> 02 Tháng 05, 2026</p>
+                        <h3 class="font-heading font-bold text-xl text-gray-900 mb-3 group-hover:text-seal-gold transition-colors">Nghị định Bảo vệ Dữ liệu Cá nhân: Mức phạt mới và cách phòng tránh</h3>
+                        <p class="text-sm text-gray-600 line-clamp-3">Các doanh nghiệp thương mại điện tử, giáo dục (Edtech) đang đối mặt với án phạt lên đến % doanh thu nếu không có cơ chế bảo mật (NDA) phù hợp...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-8 sm:hidden">
+                <a href="#" class="text-seal-gold font-semibold inline-block border border-seal-gold px-6 py-2 rounded-full">Xem tất cả bài viết</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-seal-dark text-gray-400 pt-16 pb-8 border-t-[5px] border-seal-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-10 bg-seal-gold flex items-center justify-center rounded-sm" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                            <span class="font-heading font-bold text-seal-green text-xl">S</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-heading font-bold text-seal-gold text-lg leading-none tracking-wider">SEAL</span>
+                            <span class="text-white text-[0.5rem] tracking-[0.2em] uppercase">Legal Company</span>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6">"Không chỉ là luật sư, là đối tác chiến lược". Giải pháp pháp lý toàn diện, chủ động bảo vệ tài sản doanh nghiệp.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-seal-gold hover:text-seal-dark transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-seal-gold hover:text-seal-dark transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-seal-gold hover:text-seal-dark transition-colors"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-heading text-lg">Liên Hệ</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt mt-1 text-seal-gold"></i> <span>27 Trung Kính, Phường Trung Hòa,<br>Quận Cầu Giấy, TP. Hà Nội</span></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-phone-alt text-seal-gold"></i> <span>032.8129399</span></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-envelope text-seal-gold"></i> <span>contact@seallaw.com.vn</span></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-heading text-lg">Dịch Vụ</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-seal-gold transition-colors">Tư vấn Doanh nghiệp</a></li>
+                        <li><a href="#" class="hover:text-seal-gold transition-colors">Soạn thảo Hợp đồng</a></li>
+                        <li><a href="#" class="hover:text-seal-gold transition-colors">Sở hữu Trí tuệ</a></li>
+                        <li><a href="#" class="hover:text-seal-gold transition-colors">Đầu tư & M&A</a></li>
+                        <li><a href="#" class="hover:text-seal-gold transition-colors">Đại diện Tố tụng</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 font-heading text-lg">Đăng Ký Bản Tin</h4>
+                    <p class="text-sm mb-4">Nhận cảnh báo pháp lý và phân tích chuyên sâu hàng tháng từ chuyên gia.</p>
+                    <form onsubmit="event.preventDefault(); openModal('Đăng ký nhận tin');" class="flex">
+                        <input type="email" placeholder="Email của bạn..." class="bg-gray-800 text-white text-sm px-4 py-2 rounded-l-md focus:outline-none focus:ring-1 focus:ring-seal-gold w-full">
+                        <button type="submit" class="bg-seal-gold text-seal-dark px-4 py-2 rounded-r-md hover:bg-seal-gold-hover transition-colors"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
+                <p>&copy; 2026 Công ty Luật TNHH Pháp Ấn (SEAL LAW). All rights reserved.</p>
+                <div class="space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-seal-gold">Chính sách bảo mật</a>
+                    <a href="#" class="hover:text-seal-gold">Điều khoản dịch vụ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Modal (Replaces alerts) -->
+    <div id="actionModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white rounded-2xl w-11/12 max-w-md relative z-10 p-8 transform scale-95 transition-transform duration-300 shadow-2xl border-t-4 border-seal-gold" id="modalContent">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-seal-green/10 text-seal-green rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class="fas fa-envelope-open-text text-seal-gold"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-heading text-seal-green" id="modalTitle">Đăng Ký Dịch Vụ</h3>
+                <p class="text-gray-500 text-sm mt-2">Vui lòng để lại thông tin, chuyên gia của SEAL LAW sẽ liên hệ lại trong vòng 04 giờ làm việc.</p>
+            </div>
+
+            <form onsubmit="submitForm(event)">
+                <div class="space-y-4">
+                    <div>
+                        <input type="text" placeholder="Tên Công ty / Người liên hệ" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-seal-gold focus:ring-1 focus:ring-seal-gold transition-colors text-sm">
+                    </div>
+                    <div>
+                        <input type="tel" placeholder="Số điện thoại" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-seal-gold focus:ring-1 focus:ring-seal-gold transition-colors text-sm">
+                    </div>
+                    <div>
+                        <textarea placeholder="Vấn đề pháp lý cấp bách nhất hiện tại (Tùy chọn)" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-seal-gold focus:ring-1 focus:ring-seal-gold transition-colors text-sm resize-none"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-6 bg-seal-gold hover:bg-seal-gold-hover text-seal-green font-bold py-3 px-4 rounded-xl transition-colors shadow-md">
+                    Gửi Yêu Cầu
+                </button>
+            </form>
+            <div id="successMessage" class="hidden text-center py-8">
+                <i class="fas fa-check-circle text-5xl text-green-500 mb-4"></i>
+                <h4 class="text-xl font-bold text-gray-900 mb-2">Đăng ký thành công!</h4>
+                <p class="text-gray-600">Chúng tôi đã nhận được thông tin. Trưởng nhóm Pháp chế sẽ liên hệ với bạn ngay.</p>
+                <button onclick="closeModal()" class="mt-6 px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Setup Gemini API Key
+        const apiKey = ""; 
+
+        // Helper function for API with exponential backoff
+        async function fetchWithRetry(url, options, maxRetries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delays[i]));
+                }
+            }
+        }
+
+        // Gemini AI Contract Analyzer
+        async function analyzeContract() {
+            const textInput = document.getElementById('ai-contract-input').value;
+            const initialDiv = document.getElementById('ai-initial');
+            const loadingDiv = document.getElementById('ai-loading');
+            const outputContent = document.getElementById('ai-output-content');
+            const submitBtn = document.getElementById('ai-submit-btn');
+
+            if (!textInput.trim()) {
+                openModal('Vui lòng nhập điều khoản hợp đồng');
+                document.getElementById('modalTitle').innerText = 'Thông báo';
+                document.querySelector('#modalContent p').innerText = 'Vui lòng dán điều khoản hợp đồng vào ô trống trước khi phân tích.';
+                document.querySelector('form').classList.add('hidden');
+                document.getElementById('successMessage').classList.remove('hidden');
+                document.getElementById('successMessage').innerHTML = `
+                    <i class="fas fa-exclamation-triangle text-5xl text-seal-gold mb-4"></i>
+                    <p class="text-gray-600">Bạn chưa nhập nội dung nào để AI phân tích.</p>
+                    <button onclick="closeModal()" class="mt-6 px-6 py-2 bg-seal-gold text-seal-green font-bold rounded-lg transition-colors">Đóng</button>
+                `;
+                return;
+            }
+
+            // Show loading state
+            initialDiv.classList.add('hidden');
+            outputContent.classList.add('hidden');
+            loadingDiv.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang Phân Tích...';
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const systemPrompt = "Bạn là một luật sư doanh nghiệp cấp cao của SEAL LAW. Nhiệm vụ của bạn là phân tích điều khoản hợp đồng do người dùng cung cấp. Yêu cầu: Hãy chỉ ra tối đa 3 rủi ro pháp lý tiềm ẩn hoặc điểm bất lợi cho doanh nghiệp trong đoạn trích đó bằng tiếng Việt. Sử dụng định dạng danh sách (gạch đầu dòng). Ở cuối câu trả lời, hãy khuyên họ một câu ngắn gọn nên đăng ký gói dịch vụ Tư Vấn Thường Xuyên của SEAL LAW để được bảo vệ quyền lợi tối đa. Giữ câu trả lời súc tích, chuyên nghiệp và dễ hiểu.";
+            
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: textInput }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const data = await fetchWithRetry(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Không thể phân tích lúc này. Vui lòng thử lại sau.";
+                
+                // Format markdown bold to HTML strong tags
+                const formattedText = responseText
+                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-seal-gold">$1</strong>')
+                    .replace(/\n/g, '<br/>')
+                    .replace(/\* /g, '<i class="fas fa-exclamation-circle text-red-400 mr-2"></i> ');
+                
+                outputContent.innerHTML = formattedText;
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                outputContent.innerHTML = "<span class='text-red-400 font-medium'><i class='fas fa-exclamation-triangle'></i> Lỗi kết nối đến máy chủ AI. Vui lòng thử lại sau hoặc liên hệ trực tiếp luật sư của chúng tôi.</span>";
+            } finally {
+                loadingDiv.classList.add('hidden');
+                outputContent.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-magic"></i> Phân Tích Ngay ✨';
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+                nav.classList.replace('py-4', 'py-0');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.replace('py-0', 'py-4');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        menu.querySelectorAll('a, button').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Pricing Toggle Logic
+        function togglePricing(period) {
+            const btnMonthly = document.getElementById('btn-monthly');
+            const btnYearly = document.getElementById('btn-yearly');
+            const priceDisplays = document.querySelectorAll('.price-display');
+            const cycleDisplays = document.querySelectorAll('.billing-cycle');
+            const savingDisplays = document.querySelectorAll('.saving-display');
+
+            if (period === 'monthly') {
+                btnMonthly.className = 'px-6 py-2 rounded-full text-sm font-semibold transition-colors bg-seal-gold text-seal-green';
+                btnYearly.className = 'px-6 py-2 rounded-full text-sm font-semibold text-gray-300 transition-colors hover:text-white';
+                
+                priceDisplays.forEach(el => el.innerText = el.getAttribute('data-monthly'));
+                cycleDisplays.forEach(el => el.innerText = '/tháng');
+                savingDisplays.forEach(el => el.innerText = '');
+            } else {
+                btnYearly.className = 'px-6 py-2 rounded-full text-sm font-semibold transition-colors bg-seal-gold text-seal-green';
+                btnMonthly.className = 'px-6 py-2 rounded-full text-sm font-semibold text-gray-300 transition-colors hover:text-white';
+                
+                priceDisplays.forEach(el => el.innerText = el.getAttribute('data-yearly'));
+                cycleDisplays.forEach(el => el.innerText = '/năm');
+                
+                // Set savings text manually based on package
+                savingDisplays[0].innerText = '(Tiết kiệm 6.000.000 VNĐ)';
+                savingDisplays[1].innerText = '(Tiết kiệm 11.000.000 VNĐ)';
+            }
+        }
+
+        // Modal Logic (Replacing alert())
+        const modal = document.getElementById('actionModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById('modalTitle');
+        const form = modal.querySelector('form');
+        const successMessage = document.getElementById('successMessage');
+
+        function openModal(titleText) {
+            modalTitle.innerText = titleText;
+            
+            // Reset to form view
+            form.reset();
+            form.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+            document.querySelector('#modalContent p').innerText = 'Vui lòng để lại thông tin, chuyên gia của SEAL LAW sẽ liên hệ lại trong vòng 04 giờ làm việc.';
+            
+            modal.classList.remove('hidden');
+            // Small delay to allow display block to apply before changing opacity for transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // match transition duration
+        }
+
+        function submitForm(e) {
+            e.preventDefault();
+            // Simulate form submission
+            form.classList.add('hidden');
+            successMessage.classList.remove('hidden');
+            document.querySelector('#modalContent p').innerText = '';
+            successMessage.innerHTML = `
+                <i class="fas fa-check-circle text-5xl text-green-500 mb-4"></i>
+                <h4 class="text-xl font-bold text-gray-900 mb-2">Đăng ký thành công!</h4>
+                <p class="text-gray-600">Chúng tôi đã nhận được thông tin. Trưởng nhóm Pháp chế sẽ liên hệ với bạn ngay.</p>
+                <button onclick="closeModal()" class="mt-6 px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition-colors">Đóng</button>
+            `;
+        }
+    </script>
+</body>
+</html>
